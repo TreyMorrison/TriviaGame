@@ -1,23 +1,18 @@
-var number = 30;
+setTimeout(fifteenSeconds, 1000 * 15);
+setTimeout(timeUp, 1000 * 30);
 
-var intervalId;
+function fifteenSeconds() {
 
-function run() {
-	intervalId = setInterval(
-		decrement, 1000 * 30);
+	$("#time-left").append("<h2>Fifteen seconds remaining</h2>");
+	console.log("15 seconds left");
+
 }
 
-function decrement() {
+function timeUp() {
 
-	number--;
-	$("#show-number").html("<h2>" + number + "</h2>");
-
-	if (number === 0) {
-
-		stop();
-
-		alert("Times Up!");
-	}
+	console.log("done");
+	$("#time-left").append("<h2>Time's Up!</h2>");
+	console.log("time is up");
 }
 
 function buildQuiz() {
