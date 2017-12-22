@@ -1,82 +1,112 @@
-	function buildQuiz() {
-		var output = [];
+var number = 30;
 
-		myQuestions.forEach((currentQuestion, questionNumber) => {
-			var answers = [];
+var intervalId;
 
-			for (letter in currentQuestion.answers) {
-				answers.push(
-					`<label>
-						<input type="radio" name="question${questionNumber}" value="${letter}">
-						${letter} :
-						%{currentQuestion.answers[letter]}
-					</label>`
-				);
-			}
+function run() {
+	intervalId = setInterval(
+		decrement, 1000 * 30);
+}
 
-			output.push(
-				`<div class="question"> ${currentQuestion.question} </div>
-				<div class="answers"> ${answers.join("")} </div>`
+function decrement() {
+
+	number--;
+	$("#show-number").html("<h2>" + number + "</h2>");
+
+	if (number === 0) {
+
+		stop();
+
+		alert("Times Up!");
+	}
+}
+
+function buildQuiz() {
+		
+	var output = [];
+
+	myQuestions.forEach((currentQuestion, questionNumber) => {
+			
+		var answers = [];
+
+		for (letter in currentQuestion.answers) {
+				
+			answers.push(
+				`<label>
+					<input type="radio" name="question${questionNumber}" value="${letter}">
+					${letter} :
+					${currentQuestion.answers[letter]}
+				</label>`
 			);
-		});
+		}
 
-		quizContainer.innerHTML = output.join("");
-	}
+		output.push(
+			`<div class="question"> ${currentQuestion.question} </div>
+			<div class="answers"> ${answers.join("")} </div>`
+		);
+	});
 
-	function showResults() {
-		var answerContainers = quizContainer.querySelectorAll(".answers");
-		let numCorrect = 0;
-		myQuestions.forEach((currentQuestion, questionNumber) => {
-			var answerContainer = answerContainer[questionNumber];
-			var selector = 'input[name=question${questionNumber}]:checked';
-			var userAnswer = (answerContainer.querySelector(selector) || {}).value;
-			if (userAnswer === currentQuestion.correctAnswer) {
-				numCorrect++;
-				answerContainer[questionNumber].style.color = "lightgreen";
-			} else {
-				answerContainers[questionNumber].styel.color = "red";
-			}
-		});
+	quizContainer.innerHTML = output.join("");
+}
 
-		resultsContainer.innerHTML = '${numCorrect} out of ${myQuestions.length}';
-	}
+function showResults() {
+		
+	var answerContainers = quizContainer.querySelectorAll(".answers");
+		
+	let numCorrect = 0;
+		
+	myQuestions.forEach((currentQuestion, questionNumber) => {
+		var answerContainer = answerContainers[questionNumber];
+		var selector = `input[name=question${questionNumber}]:checked`;
+		var userAnswer = (answerContainer.querySelector(selector) || {}).value;
+			
+		if (userAnswer === currentQuestion.correctAnswer) {
+			numCorrect++;
+			
+			answerContainers[questionNumber].style.color = "lightgreen";
+		} else {
+			
+			answerContainers[questionNumber].style.color = "red";
+		}
+	});
 
-	var quizContainer = document.getElementById("quiz");
-	var resultsContainer = document.getElementById("results");
-	var submitButton = document.getElementById("submit");
-	var myQuestions = [
-	{
-		question: "Which is the heaviest Pokemon?",
-		answers: {
-			a: "Groudon",
-			b: "Cosmoem",
-			c: "Celesteela",
-			d: "B and C"
-		},
-		correctAnswer: "d"
+	resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+}
+
+var quizContainer = document.getElementById("quiz");
+var resultsContainer = document.getElementById("results");
+var submitButton = document.getElementById("submit");
+var myQuestions = [
+{
+	question: "Which is the heaviest Pokemon?",
+	answers: {
+		a: "Primal Groudon",
+		b: "Cosmoem",
+		c: "Celesteela",
+		d: "B and C"
 	},
-	{
-		question: "Which is the Pokemon mascot?",
-		answers: {
-			a: "Eevee",
-			b: "Pikachu",
-			c: "Meowth",
-			d: "Jigglypuff"
-		},
-		correctAnswer: "b"
+	correctAnswer: "d"
+},
+{
+	question: "Which is the Pokemon mascot?",
+	answers: {
+		a: "Eevee",
+		b: "Pikachu",
+		c: "Meowth",
+		d: "Jigglypuff"
 	},
-	{
-		question: "Which is the first Pokemon?",
-		answers: {
-			a: "Bulbasaur",
-			b: "Arceus",
-			c: "Rhydon",
-			d: "All of the above"
-		},
-		correctAnswer: "d"
-	}	
-	];
+	correctAnswer: "b"
+},
+{
+	question: "Which is the first Pokemon?",
+	answers: {
+		a: "Bulbasaur",
+		b: "Arceus",
+		c: "Rhydon",
+		d: "All of the above"
+	},
+	correctAnswer: "d"
+}	
+];
+buildQuiz();
 
-	buildQuiz();
-
-	submitButton.addEventListener("click", showResults);
+submitButton.addEventListener("click", showResults);
